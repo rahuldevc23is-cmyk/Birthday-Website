@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Happy Birthday, Lakshmishree B K 👑</title>
+
+<!-- ══════════════════════════════════════════════
+     FONTS (loaded from Google — needs internet)
+══════════════════════════════════════════════ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- ══════════════════════════════════════════════
+     STYLESHEET  →  edit css/style.css
+══════════════════════════════════════════════ -->
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     BACKGROUND CANVASES (do not remove)
+════════════════════════════════════ -->
+<canvas id="aurora"></canvas>
+<canvas id="particle-canvas"></canvas>
+
+<!-- ════════════════════════════════════
+     CUSTOM CURSOR (do not remove)
+════════════════════════════════════ -->
+<div id="cur"></div>
+<div id="cur2"></div>
+
+<!-- ════════════════════════════════════
+     SCENE WIPE TRANSITION (do not remove)
+════════════════════════════════════ -->
+<div id="wipe"></div>
+
+<!-- ════════════════════════════════════
+     3-2-1 COUNTDOWN OVERLAY
+════════════════════════════════════ -->
+<div id="ov321">
+  <div id="n321">3</div>
+  <div class="lbl321">get ready</div>
+</div>
+
+<!-- ════════════════════════════════════
+     MUSIC PILL  (top centre)
+════════════════════════════════════ -->
+<div id="musicPill" onclick="toggleMusic()">
+  <div class="wv">
+    <div class="wb2" style="animation-delay:0s"></div>
+    <div class="wb2" style="animation-delay:.1s"></div>
+    <div class="wb2" style="animation-delay:.2s"></div>
+    <div class="wb2" style="animation-delay:.15s"></div>
+  </div>
+  <span id="mLbl">Play music</span>
+</div>
+
+<!--
+  🎵 MUSIC FILE:
+  Place her favourite song named  music.mp3  in a folder called  music/
+  Then open  js/music.js  and set:  src: "music/music.mp3"
+-->
+<audio id="aud" loop></audio>
+
+<!-- ════════════════════════════════════
+     NAVIGATION DOTS  (right side)
+════════════════════════════════════ -->
+<div class="pip-wrap" id="pips"></div>
+
+<!-- ════════════════════════════════════
+     CONTINUE BUTTON  (bottom right)
+════════════════════════════════════ -->
+<button id="navBtn" onclick="nextScene()">Continue</button>
+
+
+<!-- ════════════════════════════════════════════════════════
+     ░░  SCENES  ░░
+     Each  <div class="scene">  is one full-screen page.
+     They appear in order: S1 → S2 → … → S10
+════════════════════════════════════════════════════════ -->
+
+<!-- ══ S1 — ENVELOPE / LANDING ══════════════════════════ -->
+<div class="scene active" id="s1">
+  <div class="bg-photo" id="s1bg"></div>
+  <div class="bg-overlay"></div>
+  <div id="s1-tap"></div><!-- invisible tap layer -->
+  <div class="s1-inner">
+    <div class="env-wrap">
+      <div class="env-body">
+        <div class="env-inner-border"></div>
+        <div class="env-flap"></div>
+        <div class="env-fold-l"></div>
+        <div class="env-fold-r"></div>
+        <div class="env-seal">💌</div>
+        <span class="env-corner tl">✦</span>
+        <span class="env-corner tr">✦</span>
+        <span class="env-corner bl">◈</span>
+        <span class="env-corner br">◈</span>
+      </div>
+    </div>
+    <div class="s1-label" id="s1lbl">A letter has arrived for Lacchi</div>
+    <div class="s1-hint"  id="s1hint">tap anywhere to open ✦</div>
+  </div>
+</div>
+
+
+<!-- ══ S2 — NAME REVEAL ══════════════════════════════════ -->
+<div class="scene" id="s2">
+  <div class="bg-photo"  id="s2bg"></div>
+  <div class="bg-overlay"></div>
+  <div class="name-row"  id="nameRow"></div><!-- letters injected by app.js -->
+  <div class="s2-nickname" id="s2nick">"Lacchi"</div>
+  <div class="s2-saved"    id="s2saved">saved in my heart as ✦ Angel ✦</div>
+  <div class="s2-wish"     id="s2wish">
+    Happy Birthday, Lakshmishree B K ✦<br>
+    <span style="font-size:.88em;opacity:.85">
+      Today the universe pauses — because someone extraordinary was born.<br>
+      You are not just a person, you are an entire world of warmth. 💛
+    </span>
+  </div>
+  <div class="s2-date" id="s2date">Your Special Day · Lakshmishree B K ✦</div>
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+
+<!-- ══ S3 — SURPRISE / COUNTDOWN ════════════════════════ -->
+<div class="scene" id="s3">
+  <div style="text-align:center;margin-bottom:2rem;position:relative;z-index:2">
+    <div style="font-family:'Pinyon Script',cursive;font-size:clamp(2rem,7vw,4rem);color:var(--gold);letter-spacing:.08em;margin-bottom:.5rem">
+      🎂 Surprise!
+    </div>
+    <div class="cd-bar"></div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:.85rem;letter-spacing:.2em;color:rgba(255,220,180,.6);text-transform:uppercase">
+      something magical is waiting for you
+    </div>
+  </div>
+  <button onclick="start321()"
+    style="background:transparent;border:1px solid var(--border);color:var(--gold);
+           padding:.8rem 2rem;font-family:'Cormorant Garamond',serif;font-size:.9rem;
+           letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:2px;
+           transition:all .3s;position:relative;z-index:2">
+    Go ahead ✦
+  </button>
+</div>
+
+
+<!-- ══ S4 — CAKE ═════════════════════════════════════════ -->
+<div class="scene" id="s4">
+  <div class="bg-photo"  id="s4bg"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- Cake canvas (tap to blow candles) -->
+  <div class="s4-wrap">
+    <div class="eyebrow" style="margin-bottom:.7rem;position:relative;z-index:2">
+      close your eyes &amp; make a wish
+    </div>
+    <canvas id="cakeC" width="280" height="260"></canvas>
+    <div class="cake-lbl" id="cakeLbl">tap the cake to blow the candles 🕯️</div>
+  </div>
+
+  <!-- Revealed after blowing -->
+  <div id="s4wish">
+    <div class="wish-divider"></div>
+    <div class="wish-title">Happy Birthday, Lacchi! 💛</div>
+    <div class="wish-text">
+      May every dream you've been quietly<br>
+      holding in your heart find its way to you.<br>
+      You deserve nothing less than magic. 👑
+    </div>
+    <div class="wish-divider"></div>
+    <button class="wish-btn" onclick="goTo(4)">See our memories ✦</button>
+  </div>
+</div>
+
+
+<!-- ══ S5 — PHOTO GALLERY (SLIDESHOW) ═══════════════════ -->
+<div class="scene" id="s5">
+  <div class="eyebrow" style="margin-bottom:.8rem;position:relative;z-index:2">
+    gallery of gold · our memories together
+  </div>
+  <div class="slide-outer" id="slideOuter">
+    <!-- Slides injected by app.js from js/photos.js -->
+  </div>
+  <div class="sl-nav">
+    <div class="sl-arr" onclick="prevSlide()">←</div>
+    <div class="sl-ctr" id="slCtr">1 / 8</div>
+    <div class="sl-arr" onclick="nextSlide()">→</div>
+  </div>
+  <p style="font-size:.7rem;color:var(--muted);font-style:italic;margin-top:.8rem;letter-spacing:.1em;text-align:center">
+    tap any card to upload Lacchi's photos ✦ or add paths in js/photos.js
+  </p>
+</div>
+
+
+<!-- ══ S6 — VIDEO GALLERY ════════════════════════════════ -->
+<div class="scene" id="s6">
+  <div class="eyebrow" style="margin-bottom:.8rem;position:relative;z-index:2">
+    memories in motion
+  </div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3.5vw,2.2rem);font-style:italic;text-align:center;margin-bottom:1rem;position:relative;z-index:2">
+    Our Videos <span style="color:var(--gold)">✦</span>
+  </div>
+  <div class="video-grid" id="videoGrid">
+    <!-- Video cards injected by app.js from js/videos.js -->
+  </div>
+  <p style="font-size:.7rem;color:var(--muted);font-style:italic;margin-top:1rem;text-align:center">
+    ✦ Add video paths in  js/videos.js  ✦
+  </p>
+</div>
+
+<!-- ═══ S7 : MUSIC PLAYER ═══ -->
+<div class="scene" id="s7">
+  <div class="section-header">
+    <span class="section-label">✦ Lacchi's Playlist ✦</span>
+    <h2 class="section-title">Her Favourite Songs</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="music-player-wrap">
+    <div class="now-playing-label">— Now Playing —</div>
+    <div class="vinyl" id="vinyl"></div>
+    <div class="track-title" id="track-title">Loading...</div>
+    <div class="track-artist" id="track-artist">—</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+    <div class="progress-times">
+      <span id="time-elapsed">0:00</span>
+      <span id="time-duration">0:00</span>
+    </div>
+    <div class="player-controls">
+      <button class="ctrl-btn" id="prev-btn" title="Previous">⏮</button>
+      <button class="ctrl-btn play-btn" id="play-btn" title="Play / Pause">▶</button>
+      <button class="ctrl-btn" id="next-btn" title="Next">⏭</button>
+    </div>
+    <div class="playlist" id="playlist-list"></div>
+  </div>
+  <p style="text-align:center;margin-top:1rem;color:var(--text-muted);font-size:.78rem;font-style:italic;position:relative;z-index:2">
+    ✦ Add her favourite songs by editing <code style="color:var(--gold);background:rgba(201,168,76,.08);padding:.1rem .35rem;border-radius:3px">js/music.js</code> ✦
+  </p>
+</div>
+
+
+
+<!-- ══ S8 — BIRTHDAY WISHES ══════════════════════════════ -->
+<div class="scene" id="s7">
+  <div class="eyebrow" style="margin-bottom:.5rem;position:relative;z-index:2">
+    from everyone who loves you
+  </div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,4vw,2.2rem);font-style:italic;text-align:center;margin-bottom:1.3rem;position:relative;z-index:2">
+    Wishes for <span style="color:var(--gold)">Lacchi</span>
+  </div>
+  <!--
+    Wish cards are built from js/wishes.js.
+    To add more wishes, edit that file — no HTML change needed.
+  -->
+  <div class="wish-boxes" id="wishBoxes"></div>
+</div>
+
+
+<!-- ══ S8 — LETTER FOR ANGEL ═════════════════════════════ -->
+<div class="scene" id="s8">
+  <div class="eyebrow" style="margin-bottom:.8rem;position:relative;z-index:2">
+    from the heart · a letter for angel
+  </div>
+  <!--
+    The letter text comes from js/letter.js.
+    Edit that file to change what it says.
+  -->
+  <div class="letter-outer">
+    <div class="letter-seal-top">💛</div>
+    <div class="letter-paper">
+      <div class="letter-date"     id="letterDate"></div>
+      <div class="letter-greeting" id="letterGreeting"></div>
+      <div class="letter-body"     id="letterBody"></div>
+      <div class="letter-sign"     id="letterSign"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ S9 — MEMORIES TIMELINE ════════════════════════════ -->
+<div class="scene" id="s9">
+  <div class="eyebrow" style="margin-bottom:.8rem;position:relative;z-index:2">
+    through the years · a golden journey
+  </div>
+  <!--
+    Timeline cards come from js/timeline.js.
+    Edit that file to add / change memories.
+  -->
+  <div style="overflow-y:auto;max-height:80vh;width:100%;padding:0 1rem">
+    <div class="timeline" id="timelineWrap"></div>
+  </div>
+</div>
+
+
+<!-- ══ S10 — FINALE ══════════════════════════════════════ -->
+<div class="scene" id="s10">
+  <div class="bg-overlay"></div>
+  <canvas id="fwC"></canvas><!-- fireworks -->
+  <canvas id="nmC"></canvas><!-- name particles -->
+  <div class="fin">
+    <div class="fin-name">Lakshmishree</div>
+    <div class="fin-tag">Happy Birthday, my Angel 💛 Always &amp; Forever</div>
+    <button class="fin-restart" onclick="restart()">↺ replay from beginning</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════
+     SCRIPTS  — loaded in correct order
+     ① content files  →  ② main engine
+════════════════════════════════════════════════════════ -->
+<script src="js/letter.js"></script>
+<script src="js/wishes.js"></script>
+<script src="js/timeline.js"></script>
+<script src="js/photos.js"></script>
+<script src="js/videos.js"></script>
+<script src="js/music.js"></script>
+<script src="js/app.js"></script>
+<script>
+// ════════════════════════════════════════════
+// CURSOR — exact from reference
+// ════════════════════════════════════════════
+const CC=document.getElementById('cur'),CC2=document.getElementById('cur2');
+let MX=0,MY=0,TX=0,TY=0;
+document.addEventListener('mousemove',e=>{MX=e.clientX;MY=e.clientY;CC.style.left=MX+'px';CC.style.top=MY+'px';});
+setInterval(()=>{TX+=(MX-TX)*.12;TY+=(MY-TY)*.12;CC2.style.left=TX+'px';CC2.style.top=TY+'px'},16);
+
+// ════════════════════════════════════════════
+// AURORA — exact from reference
+// ════════════════════════════════════════════
+const AC=document.getElementById('aurora'),AX=AC.getContext('2d');
+let AW,AH,at=0;
+function rsA(){AW=AC.width=innerWidth;AH=AC.height=innerHeight}rsA();window.addEventListener('resize',rsA);
+const aO=[
+  {x:.2,y:.4,r:.5,c:'#3d0020',sp:.0005},
+  {x:.8,y:.6,r:.45,c:'#1a0030',sp:.0004},
+  {x:.5,y:.3,r:.6,c:'#200010',sp:.0003}
+];
+function drawA(){
+  AX.clearRect(0,0,AW,AH);
+  AX.fillStyle='#030108';AX.fillRect(0,0,AW,AH);
+  aO.forEach(o=>{
+    const ox=(o.x+Math.sin(at*o.sp)*.2)*AW,oy=(o.y+Math.cos(at*o.sp*1.3)*.15)*AH,r=o.r*Math.min(AW,AH);
+    const g=AX.createRadialGradient(ox,oy,0,ox,oy,r);
+    g.addColorStop(0,o.c);g.addColorStop(1,'transparent');
+    AX.fillStyle=g;AX.fillRect(0,0,AW,AH);
+  });
+  at++;requestAnimationFrame(drawA);
+}drawA();
+
+// ════════════════════════════════════════════
+// SCENE SWITCHING
+// ════════════════════════════════════════════
+let CUR=0;const TOT=11,SCS=['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10'];
+function goTo(to){
+  if(to===CUR||to<0||to>=TOT)return;
+  const W=document.getElementById('wipe');
+  W.style.transition='transform .6s cubic-bezier(.77,0,.18,1)';
+  W.style.transformOrigin='left';W.style.transform='scaleX(1)';
+  setTimeout(()=>{
+    document.getElementById(SCS[CUR]).classList.remove('active');
+    document.getElementById(SCS[to]).classList.add('active');
+    CUR=to;
+    W.style.transition='transform .5s cubic-bezier(.77,0,.18,1)';
+    W.style.transformOrigin='right';W.style.transform='scaleX(0)';
+    updateUI();onEnter(CUR);
+  },620);
+}
+function nextScene(){goTo(CUR+1);}
+function updateUI(){
+  const showNav=CUR>0&&CUR<TOT-1&&CUR!==2;
+  document.getElementById('navBtn').style.display=showNav?'block':'none';
+  document.getElementById('navBtn').textContent=CUR===TOT-2?'Finale ✦':'Continue';
+  document.getElementById('pips').style.display=CUR>0?'flex':'none';
+  document.getElementById('musicPill').style.display=CUR>0?'flex':'none';
+  document.getElementById('custBtn').style.display=CUR>0?'block':'none';
+  const p=document.getElementById('pips');p.innerHTML='';
+  for(let i=1;i<TOT;i++){const d=document.createElement('div');d.className='pip'+(i===CUR?' on':'');d.onclick=()=>goTo(i);p.appendChild(d);}
+}
+
+// ─── S1 TAP ───
+const tap=document.getElementById('s1-tap');
+tap.addEventListener('click',()=>{if(CUR===0)goTo(1);});
+tap.addEventListener('touchend',function(e){e.preventDefault();if(CUR===0)goTo(1);},{passive:false});
+setTimeout(()=>{document.getElementById('s1lbl').style.opacity='1';document.getElementById('s1hint').style.opacity='1';},1500);
+
+// ─── S2 NAME ANIMATION ───
+(function(){
+  const nm='LACCHI',row=document.getElementById('nameRow');
+  nm.split('').forEach((ch,i)=>{
+    const s=document.createElement('span');s.className='nl';s.textContent=ch;
+    const dirs=[[0,-80],[80,-40],[-80,-40],[0,80],[80,40],[-80,40]];
+    const d=dirs[i%dirs.length];
+    s.style.transform='translate('+d[0]+'px,'+d[1]+'px)';
+    s.style.transition='opacity .6s ease '+(0.1+i*.08)+'s,transform .7s cubic-bezier(.2,1,.3,1) '+(0.1+i*.08)+'s';
+    row.appendChild(s);
+  });
+  row.addEventListener('mousemove',e=>{
+    const r=row.getBoundingClientRect();
+    const dx=(e.clientX-r.left-r.width/2)/r.width*18,dy=(e.clientY-r.top-r.height/2)/r.height*8;
+    document.querySelectorAll('.nl').forEach((l,i)=>{l.style.transform='translate('+(dx*(i%2?1:-1))+'px,'+dy+'px)';});
+  });
+  row.addEventListener('mouseleave',()=>{document.querySelectorAll('.nl').forEach(l=>l.style.transform='translate(0,0)');});
+})();
+function animName(){
+  document.querySelectorAll('.nl').forEach((l,i)=>{setTimeout(()=>{l.style.opacity='1';l.style.transform='translate(0,0)';},i*85);});
+  setTimeout(()=>{document.getElementById('s2wish').style.opacity='1';document.getElementById('s2sub').style.opacity='1';},900);
+  const pe=['🌸','🌷','✦','◈','❋','💛'];
+  const id=setInterval(()=>{
+    if(CUR!==1){clearInterval(id);return;}
+    const p=document.createElement('div');
+    p.style.cssText='position:fixed;left:'+Math.random()*100+'vw;top:-20px;font-size:'+(0.7+Math.random()*.8)+'rem;pointer-events:none;z-index:12;animation:cfFall '+(5+Math.random()*5)+'s linear forwards;color:rgba(201,168,76,.6)';
+    p.textContent=pe[~~(Math.random()*pe.length)];document.body.appendChild(p);setTimeout(()=>p.remove(),11000);
+  },350);
+}
+
+// ─── 3-2-1 ───
+function start321(){
+  const ov=document.getElementById('ov321'),el=document.getElementById('n321');
+  ov.classList.add('on');
+  const nums=['3','2','1','🎂'];let i=0;
+  function tick(){el.textContent=nums[i];el.style.animation='none';void el.offsetWidth;el.style.animation='n321a .8s ease both';i++;if(i<nums.length)setTimeout(tick,900);else setTimeout(()=>{ov.classList.remove('on');goTo(3);},700);}
+  tick();
+}
+
+// ─── CAKE CANVAS (exact from reference) ───
+(function(){
+  const c=document.getElementById('cakeC'),ctx=c.getContext('2d');
+  const W=280,H=260;let flames=[];
+  function spF(x,y){return{x:x+(-2+Math.random()*4),y,vy:-1.2-Math.random()*.8,vx:(-.4+Math.random()*.8),life:1,size:5+Math.random()*3};}
+  function initF(){flames=[];[[84,74],[140,66],[196,74]].forEach(([x,y])=>{for(let i=0;i<6;i++)flames.push(spF(x,y));});}initF();
+  function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const bg=ctx.createRadialGradient(140,235,0,140,235,150);bg.addColorStop(0,'rgba(201,168,76,0.07)');bg.addColorStop(1,'transparent');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    rr(14,156,252,84,12);const b1=ctx.createLinearGradient(14,156,14,240);b1.addColorStop(0,'#3d0f60');b1.addColorStop(1,'#280a40');ctx.fillStyle=b1;ctx.fill();ctx.strokeStyle='rgba(201,168,76,.3)';ctx.lineWidth=1;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(14,168);for(let i=0;i<11;i++){const px=14+i*25;ctx.quadraticCurveTo(px+12,158,px+25,168);}ctx.strokeStyle='#e8527a';ctx.lineWidth=3;ctx.lineCap='round';ctx.stroke();
+    ['💛','✦','💕','✨','🌸'].forEach((e,i)=>{ctx.font='13px serif';ctx.textAlign='center';ctx.fillText(e,46+i*48,204);});
+    rr(38,112,204,48,8);const b2=ctx.createLinearGradient(38,112,38,160);b2.addColorStop(0,'#2d0a4e');b2.addColorStop(1,'#1e0635');ctx.fillStyle=b2;ctx.fill();ctx.strokeStyle='rgba(201,168,76,.22)';ctx.lineWidth=1;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(38,123);for(let i=0;i<9;i++){const px=38+i*23;ctx.quadraticCurveTo(px+11,113,px+23,123);}ctx.strokeStyle='#c084fc';ctx.lineWidth=2.5;ctx.stroke();
+    rr(66,76,148,40,6);const b3=ctx.createLinearGradient(66,76,66,116);b3.addColorStop(0,'#200535');b3.addColorStop(1,'#160325');ctx.fillStyle=b3;ctx.fill();ctx.strokeStyle='rgba(201,168,76,.2)';ctx.lineWidth=1;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(66,86);for(let i=0;i<7;i++){const px=66+i*21;ctx.quadraticCurveTo(px+10,76,px+21,86);}ctx.strokeStyle='rgba(201,168,76,.65)';ctx.lineWidth=2;ctx.stroke();
+    [[84,44],[140,37],[196,44]].forEach(([x,y],i)=>{const cg=ctx.createLinearGradient(x-5,y,x+5,y);const col=[['#ffd6b8','#f4a070'],['#ffb3d0','#e8527a'],['#c084fc','#9040d0']];cg.addColorStop(0,col[i][0]);cg.addColorStop(1,col[i][1]);rr(x-5,y,10,38-i*3,4);ctx.fillStyle=cg;ctx.fill();});
+    if(!window._blown){
+      flames.forEach(f=>{f.x+=f.vx;f.y+=f.vy;f.life-=.028;const bases=[[84,74],[140,66],[196,74]];if(f.life<=0){const b=bases[~~(Math.random()*3)];Object.assign(f,spF(b[0],b[1]));f.life=1;}const fg=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,f.size*f.life);fg.addColorStop(0,'rgba(255,220,50,'+f.life+')');fg.addColorStop(.5,'rgba(255,120,0,'+(f.life*.65)+')');fg.addColorStop(1,'transparent');ctx.fillStyle=fg;ctx.beginPath();ctx.arc(f.x,f.y,f.size*f.life,0,Math.PI*2);ctx.fill();});
+      [[84,74],[140,66],[196,74]].forEach(([x,y])=>{const gg=ctx.createRadialGradient(x,y,0,x,y,26);gg.addColorStop(0,'rgba(255,200,50,0.1)');gg.addColorStop(1,'transparent');ctx.fillStyle=gg;ctx.fillRect(0,0,W,H);});
+    }else{[[84,70],[140,63],[196,70]].forEach(([x,y])=>{ctx.font='13px serif';ctx.textAlign='center';ctx.fillText('💨',x,y);});}
+    requestAnimationFrame(draw);
+  }draw();
+})();
+let blown=false;
+function blowCandles(){
+  if(blown)return;blown=true;window._blown=true;
+  confetti(80);
+  document.getElementById('navBtn').style.display='none';
+  document.querySelector('.s4-wrap').style.display='none';
+  document.getElementById('s4wish').style.display='flex';
+}
+document.getElementById('cakeC').addEventListener('click',blowCandles);
+document.getElementById('cakeC').addEventListener('touchend',function(e){e.preventDefault();blowCandles();},{passive:false});
+document.getElementById('cakeLbl').addEventListener('click',blowCandles);
+
+// ─── GALLERY ───
+function renderGallery(){
+  const grid=document.getElementById('gallery-grid');
+  if(!grid||!window.GALLERY_PHOTOS)return;
+  grid.innerHTML='';
+  window.GALLERY_PHOTOS.forEach((photo,i)=>{
+    const item=document.createElement('div');item.className='gallery-item';
+    if(photo.src){
+      item.innerHTML='<img src="'+photo.src+'" alt="'+photo.caption+'" loading="lazy"><div class="photo-label">'+photo.caption+'</div>';
+    }else{
+      item.innerHTML='<div class="gallery-placeholder"><div class="ph-icon">📸</div><p>'+(photo.caption||'Add a photo of Lacchi')+'</p></div>';
+    }
+    grid.appendChild(item);
+  });
+}
+
+// ─── VIDEOS ───
+function renderVideos(){
+  const grid=document.getElementById('video-grid');
+  if(!grid||!window.VIDEOS)return;
+  grid.innerHTML='';
+  window.VIDEOS.forEach(video=>{
+    const card=document.createElement('div');card.className='video-card';
+    let mediaHTML='';
+    if(video.src){
+      if(video.type==='youtube'){mediaHTML='<div class="video-wrapper"><iframe src="'+video.src+'" allowfullscreen></iframe></div>';}
+      else{mediaHTML='<div class="video-wrapper"><video controls><source src="'+video.src+'" type="video/mp4"></video></div>';}
+    }else{mediaHTML='<div class="video-placeholder"><div class="vp-icon">🎬</div></div>';}
+    card.innerHTML=mediaHTML+'<div class="video-info"><h3>'+video.title+'</h3><p>'+video.description+'</p></div>';
+    grid.appendChild(card);
+  });
+}
+
+// ─── MUSIC PLAYER ───
+function renderMusicPlayer(){
+  const playlist=window.PLAYLIST;
+  if(!playlist||!playlist.length)return;
+  let currentIndex=0,isPlaying=false,audio=new Audio(),progressInterval=null;
+  const trackTitle=document.getElementById('track-title'),trackArtist=document.getElementById('track-artist');
+  const playBtn=document.getElementById('play-btn'),prevBtn=document.getElementById('prev-btn'),nextBtn=document.getElementById('next-btn');
+  const progressFill=document.getElementById('progress-fill'),timeElapsed=document.getElementById('time-elapsed'),timeDuration=document.getElementById('time-duration');
+  const vinyl=document.getElementById('vinyl'),playlistEl=document.getElementById('playlist-list');
+  function loadTrack(index){
+    const track=playlist[index];
+    if(trackTitle)trackTitle.textContent=track.title;
+    if(trackArtist)trackArtist.textContent=track.artist;
+    if(timeDuration)timeDuration.textContent=track.duration||'--:--';
+    if(progressFill)progressFill.style.width='0%';
+    if(timeElapsed)timeElapsed.textContent='0:00';
+    if(track.src)audio.src=track.src;else audio.src='';
+    document.querySelectorAll('.playlist-item').forEach((el,i)=>el.classList.toggle('active',i===index));
+  }
+  function togglePlay(){
+    if(!playlist[currentIndex].src){if(trackArtist){trackArtist.textContent='⚠ Add audio file in music.js';setTimeout(()=>trackArtist.textContent=playlist[currentIndex].artist,3000);}return;}
+    if(isPlaying){audio.pause();isPlaying=false;playBtn.textContent='▶';vinyl.classList.remove('spinning');clearInterval(progressInterval);}
+    else{audio.play().then(()=>{isPlaying=true;playBtn.textContent='⏸';vinyl.classList.add('spinning');progressInterval=setInterval(updateProgress,500);}).catch(()=>{});}
+  }
+  function updateProgress(){if(!audio.duration)return;const pct=(audio.currentTime/audio.duration)*100;if(progressFill)progressFill.style.width=pct+'%';if(timeElapsed)timeElapsed.textContent=fmt(audio.currentTime);if(timeDuration)timeDuration.textContent=fmt(audio.duration);}
+  function fmt(s){const m=Math.floor(s/60),sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec;}
+  function stopAudio(){audio.pause();audio.currentTime=0;isPlaying=false;if(playBtn)playBtn.textContent='▶';if(vinyl)vinyl.classList.remove('spinning');clearInterval(progressInterval);}
+  function nextTrack(){stopAudio();currentIndex=(currentIndex+1)%playlist.length;loadTrack(currentIndex);}
+  function prevTrack(){stopAudio();currentIndex=(currentIndex-1+playlist.length)%playlist.length;loadTrack(currentIndex);}
+  audio.addEventListener('ended',nextTrack);
+  if(playBtn)playBtn.addEventListener('click',togglePlay);
+  if(nextBtn)nextBtn.addEventListener('click',nextTrack);
+  if(prevBtn)prevBtn.addEventListener('click',prevTrack);
+  if(playlistEl){
+    playlistEl.innerHTML='';
+    playlist.forEach((track,i)=>{
+      const item=document.createElement('div');item.className='playlist-item'+(i===0?' active':'');
+      item.innerHTML='<span class="playlist-num">'+(i===0?'♪':i+1)+'</span><div class="playlist-info"><div class="playlist-name">'+track.title+'</div><div class="playlist-artist-sm">'+track.artist+'</div></div><span class="playlist-dur">'+(track.duration||'--:--')+'</span>';
+      item.addEventListener('click',()=>{stopAudio();currentIndex=i;loadTrack(i);});
+      playlistEl.appendChild(item);
+    });
+  }
+  loadTrack(0);
+}
+
+// ─── LETTER ───
+function renderLetter(){
+  const msg=window.BIRTHDAY_MESSAGE;if(!msg)return;
+  const g=document.getElementById('letter-greeting'),b=document.getElementById('letter-body'),s=document.getElementById('letter-sign'),d=document.getElementById('letter-date');
+  if(g)g.textContent=msg.greeting;if(b)b.textContent=msg.body;if(s)s.textContent=msg.sign;
+  if(d){const now=new Date();d.textContent=now.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});}
+}
+
+// ─── FIREWORKS ───
+const FWC=document.getElementById('fwC'),FWCTX=FWC.getContext('2d');
+let FWR=[],FWP=[],fwOn=false;
+function rsFW(){FWC.width=innerWidth;FWC.height=innerHeight;}rsFW();window.addEventListener('resize',rsFW);
+const FWCOLS=['#c9a84c','#e8c97e','#d4527a','#f0a0c0','#c084fc','#fff','#f0c060'];
+function lRkt(){FWR.push({x:innerWidth*.1+Math.random()*innerWidth*.8,y:innerHeight,tx:innerWidth*.15+Math.random()*innerWidth*.7,ty:50+Math.random()*innerHeight*.4,color:FWCOLS[~~(Math.random()*FWCOLS.length)],spd:12+Math.random()*5,trail:[]});}
+function boom(x,y,col){for(let i=0;i<100;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*6;FWP.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,color:col,life:1,size:2+Math.random()*2.5});}}
+function fwLoop(){if(!fwOn)return;FWCTX.fillStyle='rgba(3,1,8,.17)';FWCTX.fillRect(0,0,FWC.width,FWC.height);FWR.forEach((r,i)=>{r.trail.push({x:r.x,y:r.y});if(r.trail.length>12)r.trail.shift();r.trail.forEach((p,ti)=>{FWCTX.beginPath();FWCTX.arc(p.x,p.y,1.5*(ti/r.trail.length),0,Math.PI*2);FWCTX.fillStyle='rgba(201,168,76,'+(ti/r.trail.length*.5)+')';FWCTX.fill();});const dx=r.tx-r.x,dy=r.ty-r.y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<r.spd){boom(r.x,r.y,r.color);FWR.splice(i,1);return;}r.x+=dx/dist*r.spd;r.y+=dy/dist*r.spd;FWCTX.beginPath();FWCTX.arc(r.x,r.y,2.5,0,Math.PI*2);FWCTX.fillStyle=r.color;FWCTX.fill();});FWP.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.07;p.vx*=.97;p.life-=.015;});FWP=FWP.filter(p=>p.life>0);FWP.forEach(p=>{FWCTX.beginPath();FWCTX.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);FWCTX.fillStyle=p.color;FWCTX.globalAlpha=p.life*p.life;FWCTX.fill();FWCTX.globalAlpha=1;});requestAnimationFrame(fwLoop);}
+function startFW(){fwOn=true;FWCTX.fillStyle='rgba(3,1,8,1)';FWCTX.fillRect(0,0,FWC.width,FWC.height);fwLoop();lRkt();lRkt();const id=setInterval(()=>{lRkt();if(Math.random()<.4)lRkt();},700);setTimeout(()=>clearInterval(id),20000);}
+
+// ─── NAME PARTICLE FINALE ───
+(function(){
+  const nc=document.getElementById('nmC');
+  function rsNC(){nc.width=innerWidth;nc.height=innerHeight;}rsNC();window.addEventListener('resize',rsNC);
+  const nctx=nc.getContext('2d');
+  window._nameAnim=function(){
+    const tmp=document.createElement('canvas');tmp.width=innerWidth;tmp.height=110;
+    const tc=tmp.getContext('2d');
+    tc.font='bold '+Math.min(innerWidth*.1,90)+'px Pinyon Script,serif';
+    tc.textAlign='center';tc.fillStyle='#fff';tc.fillText('Lakshmishree',innerWidth/2,95);
+    const d=tc.getImageData(0,0,innerWidth,110).data;
+    const pts=[];
+    for(let y=0;y<110;y+=4)for(let x=0;x<innerWidth;x+=4){if(d[(y*innerWidth+x)*4+3]>128)pts.push([x,y+innerHeight*.28]);}
+    const parts=pts.slice(0,Math.min(pts.length,600)).map(p=>({tx:p[0],ty:p[1],x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:0,vy:0,color:FWCOLS[~~(Math.random()*FWCOLS.length)],size:1.5+Math.random()*1.5}));
+    function anim(){nctx.clearRect(0,0,nc.width,nc.height);let done=true;parts.forEach(p=>{const dx=p.tx-p.x,dy=p.ty-p.y;if(Math.abs(dx)>.5||Math.abs(dy)>.5)done=false;p.vx+=dx*.06;p.vy+=dy*.06;p.vx*=.72;p.vy*=.72;p.x+=p.vx;p.y+=p.vy;nctx.beginPath();nctx.arc(p.x,p.y,p.size,0,Math.PI*2);nctx.fillStyle=p.color;nctx.globalAlpha=.9;nctx.fill();nctx.globalAlpha=1;});if(!done)requestAnimationFrame(anim);}
+    setTimeout(anim,800);
+  };
+})();
+
+// ─── MUSIC TOGGLE ───
+let musicOn=false;const aud=document.getElementById('aud');
+function toggleMusic(){const bs=document.querySelectorAll('.wb2');if(!musicOn){aud.play().then(()=>{musicOn=true;document.getElementById('mLbl').textContent='Now playing';bs.forEach(b=>b.classList.add('a'));}).catch(()=>{});}else{aud.pause();musicOn=false;document.getElementById('mLbl').textContent='Play music';bs.forEach(b=>b.classList.remove('a'));}}
+
+// ─── CONFETTI ───
+function confetti(n){const cs=['#c9a84c','#e8c97e','#d4527a','#f0a0c0','#c084fc','#fff','#f0c060'];for(let i=0;i<(n||80);i++){const c=document.createElement('div');c.className='cf';c.style.cssText='left:'+Math.random()*100+'vw;top:-20px;width:'+(5+Math.random()*9)+'px;height:'+(5+Math.random()*9)+'px;background:'+cs[~~(Math.random()*cs.length)]+';animation-delay:'+(Math.random()*1.5)+'s;border-radius:'+(Math.random()>.5?'50%':'1px');document.body.appendChild(c);setTimeout(()=>c.remove(),5000);}}
+
+// ─── CUSTOMIZE ───
+function openCust(){document.getElementById('custModal').style.display='flex';}
+function closeCust(){document.getElementById('custModal').style.display='none';}
+
+// ─── ON ENTER ───
+function onEnter(idx){
+  if(idx===1)animName();
+  if(idx===4){renderGallery();}
+  if(idx===5){renderVideos();}
+  if(idx===6){renderMusicPlayer();}
+  if(idx===7){renderLetter();}
+  if(idx===9){confetti(150);startFW();setTimeout(()=>window._nameAnim&&window._nameAnim(),1200);}
+}
+
+// ─── RESTART ───
+function restart(){
+  fwOn=false;FWCTX.clearRect(0,0,FWC.width,FWC.height);FWR=[];FWP=[];
+  blown=false;window._blown=false;
+  document.querySelector('.s4-wrap').style.display='flex';
+  document.getElementById('s4wish').style.display='none';
+  document.querySelectorAll('.nl').forEach(l=>{l.style.opacity='0';l.style.transform='translate(0,0)';});
+  goTo(0);
+}
+
+// ─── INIT ───
+updateUI();confetti(50);
+</script>
+</body>
+</html>
